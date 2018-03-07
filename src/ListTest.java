@@ -23,7 +23,7 @@ class ListTest {
         while (list.size() > 0) {
             int m = list.remove();
             if (n > m) {
-                fail("Integer list is not sorted.");
+                fail("Integer liist is not sorted.");
             }
             n = m;
         }
