@@ -72,7 +72,7 @@ class ListTest {
     }
 
     /**
-     * Test av remove på tom liste.
+     * Test av remove på tom jsliste.
      */
     @Test
     void oppg1_emptyRemove(){
