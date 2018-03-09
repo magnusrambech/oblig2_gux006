@@ -7,6 +7,7 @@ import java.util.function.Predicate;
 
 public class LinkedList<E> implements IList<E>{
         Node head;
+        int size;
 
     /**
      * ,* Gir det første elementet i listen.
@@ -250,6 +251,9 @@ public class LinkedList<E> implements IList<E>{
 
         public Node(E data){
             this.data = data;
+        }
+        public E getData(){
+            return  data;
         }
     }
 }

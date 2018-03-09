@@ -1,5 +1,6 @@
 
 import org.junit.jupiter.api.Test;
+import sun.awt.image.ImageWatched;
 
 import java.time.Duration;
 import java.util.*;
@@ -30,16 +31,119 @@ class ListTest {
 
     }
 
+    /**
+     * Test av First() på tom liste.
+     */
     @Test
     void oppg1_emptyFirst(){
         LinkedList<Integer> list = new LinkedList<Integer>();
-        Throwable excep = assertThrows(NoSuchElementException.class, list::first);
+        assertThrows(NoSuchElementException.class, list::first);
     }
+
+    /**
+     * Test av rest() på tom liste.
+     */
     @Test
-    void oppg2_emptyRest(){
+    void oppg1_emptyRest(){
         LinkedList<Integer> list = new LinkedList<Integer>();
-        Throwable excep = assertThrows(NoSuchElementException.class, list::rest);
+        assertThrows(NoSuchElementException.class, list::rest);
     }
+
+    /**
+     * Test av add() på tom liste.
+     */
+    @Test
+    void oppg1_emptyAdd(){
+        LinkedList<Integer> list = new LinkedList<Integer>();
+        assertEquals(list.size,0);
+        list.add(10);
+        assertEquals(1, list.size);
+    }
+
+    /**
+     * Test av put() på tom liste.
+     */
+    @Test
+    void oppg1_emptyPut(){
+        LinkedList<Integer> list = new LinkedList<Integer>();
+        assertEquals(list.size,0);
+        list.add(10);
+        assertEquals(1, list.size);
+    }
+
+    /**
+     * Test av remove på tom liste.
+     */
+    @Test
+    void oppg1_emptyRemove(){
+        LinkedList<Integer> list = new LinkedList<Integer>();
+        assertThrows(NoSuchElementException.class, list::remove);
+    }
+
+    /**
+     * Test av first() på liste med 1 objekt
+     */
+    @Test
+    void oppg1_singleEntryFirst(){
+        LinkedList<Integer> list = new LinkedList<Integer>();
+        int i = 10;
+        list.add(i);
+        assertNotNull(list.first());
+    }
+
+    /**
+     * Test av rest() på liste med 1 objekt
+     */
+    @Test
+    void oppg1_singleEntryRest(){
+        LinkedList<Integer> list = new LinkedList<Integer>();
+        int i = 10;
+        list.add(i);
+
+        IList<Integer> restList = list.rest();
+        assertEquals(null, restList.first());
+    }
+
+    /**
+     * Test av add() på liste med 1 objekt
+     */
+    @Test
+    void oppg1_singleEntryAdd(){
+        LinkedList<Integer> list = new LinkedList<Integer>();
+        int i = 10;
+        int y = 20;
+        list.add(i);
+        assertEquals(list.size(),1);
+        list.add(y);
+        assertEquals(list.size(), 2);
+    }
+
+    /**
+     * Test av put() på liste med 1 objekt
+     */
+    @Test
+    void oppg1_singleEntryPut(){
+        LinkedList<Integer> list = new LinkedList<Integer>();
+        int i = 10;
+        int y = 20;
+        list.add(i);
+        assertEquals(list.size(),1);
+        list.add(y);
+        assertEquals(list.size(), 2);
+    }
+
+    /**
+     * Test av remove() på liste med 1 objekt
+     */
+    @Test
+    void oppg1_singleEntryRemove(){
+        LinkedList<Integer> list = new LinkedList<Integer>();
+        int i = 10;
+        list.add(i);
+        assertNotNull(list.remove());
+
+    }
+
 
 
     @Test
@@ -52,6 +156,7 @@ class ListTest {
         for (String value : values) {
             list.add(value);
         }
+
 
         list.sort(Comparator.naturalOrder());
 
