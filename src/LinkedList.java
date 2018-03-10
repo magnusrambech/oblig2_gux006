@@ -1,5 +1,8 @@
+import sun.awt.image.ImageWatched;
+
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -9,6 +12,44 @@ public class LinkedList<E> implements IList<E>{
         Node head;
         int size;
 
+
+
+
+        public LinkedList(){
+            this.size = 0;
+            this.head = null;
+        }
+        public LinkedList(E elem){
+            Node newNode = new Node(elem);
+            head = newNode;
+        }
+
+    /**
+     * Legger alle elementene fra en liste inn i en linked list.
+     * @param elem
+     * @param list
+     */
+    public LinkedList(E elem, List list) {
+            if (list != null) {
+                Iterator listIterator = list.iterator();
+                while(listIterator.hasNext()){
+                    Node newNode = new Node((E)listIterator.next());
+                    if(head==null){
+                       this.head = newNode;
+                    }
+                    else{
+                        newNode.next = head;
+                        this.head = newNode;
+                    }
+
+                }
+            }
+            this.put(elem);
+        }
+
+        public int getSize(){
+        return size;
+        }
     /**
      * ,* Gir det første elementet i listen.
      * ,*
@@ -18,7 +59,7 @@ public class LinkedList<E> implements IList<E>{
      */
     @Override
     public E first() throws NoSuchElementException {
-        return null;
+        return head.getData();
     }
 
     /**
@@ -30,7 +71,27 @@ public class LinkedList<E> implements IList<E>{
      */
     @Override
     public IList<E> rest() {
-        return null;
+        IList<E> returnList = new LinkedList<E>();
+        if(size<2){
+            return null;
+        }
+        else {
+
+            Node curr = head.getNext();
+            while(curr.getData()!=null){
+                returnList.add(curr.getData());
+                if(curr.hasNext()){
+                    curr = curr.getNext();
+                }
+                else {
+                    break;
+                }
+            }
+        }
+        return returnList;
+
+
+
     }
 
     /**
@@ -41,7 +102,17 @@ public class LinkedList<E> implements IList<E>{
      */
     @Override
     public boolean add(E elem) {
-        return false;
+        Node curr = head;
+        Node newNode = new Node(elem);
+        if(isEmpty()){
+            this.head = newNode;
+        }
+        while(curr.hasNext()){
+            curr=curr.getNext();
+        }
+        curr.next = newNode;
+        size++;
+        return true;
     }
 
     /**
@@ -52,7 +123,16 @@ public class LinkedList<E> implements IList<E>{
      */
     @Override
     public boolean put(E elem) {
-        return false;
+        Node newNode = new Node(elem);
+        if(isEmpty()){
+            this.head = newNode;
+        }
+        else{
+            newNode.next = this.head;
+            this.head = newNode;
+        }
+        size++;
+        return true;
     }
 
     /**
@@ -64,7 +144,21 @@ public class LinkedList<E> implements IList<E>{
      */
     @Override
     public E remove() throws NoSuchElementException {
-        return null;
+        if(head.hasNext()){
+            Node nodeToRemove = head;
+            head = head.getNext();
+            size--;
+            return nodeToRemove.getData();
+        }
+        else if(isEmpty()){
+            throw new NoSuchElementException();
+        }
+        else{
+            Node nodeToRemove = head;
+            head = null;
+            size--;
+            return  nodeToRemove.getData();
+        }
     }
 
     /**
@@ -79,7 +173,36 @@ public class LinkedList<E> implements IList<E>{
      */
     @Override
     public boolean remove(Object o) {
+        if(this.contains(o)){
+            if(head.getData() == o){
+                this.head = this.head.getNext();
+                size--;
+                return true;
+            }
+            else{
+                Node current = this.head;
+                Node prev = null;
+                while(current!= null){
+                    if(current.getData()==o){
+                        if(current.hasNext()){
+                            prev.setNext(current.getNext());
+                        }
+                        else{
+                            prev.setNext(null);
+                        }
+                        current=null;
+                        size--;
+                        return true;
+                    }
+                    else{
+                        prev = current;
+                        current = current.getNext();
+                    }
+                }
+            }
+        }
         return false;
+
     }
 
     /**
@@ -93,7 +216,27 @@ public class LinkedList<E> implements IList<E>{
      */
     @Override
     public boolean contains(Object o) {
+        if(isEmpty()){
+            return false;
+        }
+        else {
+            Node curr = head;
+            while(curr!=null){
+                if(curr.getData() == o){
+                    return true;
+                }
+                else{
+                    if(curr.hasNext()){
+                        curr = curr.getNext();
+                    }
+                    else{
+                        curr = null;
+                    }
+                }
+
+            }
         return false;
+        }
     }
 
     /**
@@ -117,8 +260,10 @@ public class LinkedList<E> implements IList<E>{
      * @param list
      */
     @Override
-    public void append(IList<? super E> list) {
-
+    public void append(IList<? extends E> list) {
+        for (int i = 0; i < list.size(); i++) {
+            this.add((E)list.remove());
+        }
     }
 
     /**
@@ -131,8 +276,10 @@ public class LinkedList<E> implements IList<E>{
      * @param list
      */
     @Override
-    public void prepend(IList<? super E> list) {
-
+    public void prepend(IList<? extends E> list) {
+        for (int i = 0; i <= list.size(); i++) {
+            this.put((E) list.remove());
+        }
     }
 
     /**
@@ -146,8 +293,14 @@ public class LinkedList<E> implements IList<E>{
      * @param lists
      */
     @Override
-    public IList<E> concat(IList<? super E>... lists) {
-        return null;
+    public IList<E> concat(IList<? extends E>... lists) {
+        IList<E> mergedList = new LinkedList<E>();
+       for(IList<? extends E> list : lists){
+           while(!list.isEmpty()){
+               mergedList.add(list.remove());
+           }
+       }
+       return mergedList;
     }
 
     /**
@@ -241,11 +394,14 @@ public class LinkedList<E> implements IList<E>{
      */
     @Override
     public Iterator<E> iterator() {
-        return null;
+        Iterator it = new ListIterator();
+        return it;
     }
 
 
     public class Node {
+
+
         private Node next;
         private E data;
 
@@ -254,6 +410,54 @@ public class LinkedList<E> implements IList<E>{
         }
         public E getData(){
             return  data;
+        }
+        public Node getNext() {
+            return next;
+        }
+        public boolean hasNext(){
+            return next!=null;
+        }
+        public void setNext(Node e){
+            this.next = e;
+        }
+
+    }
+
+    public class ListIterator implements Iterator<E>{
+
+        Node current = head;
+
+
+
+        /**
+         * Returns {@code true} if the iteration has more elements.
+         * (In other words, returns {@code true} if {@link #next} would
+         * return an element rather than throwing an exception.)
+         *
+         * @return {@code true} if the iteration has more elements
+         */
+        @Override
+        public boolean hasNext() {
+            return current!=null;
+        }
+
+        /**
+         * Returns the next element in the iteration.
+         *
+         * @return the next element in the iteration
+         * @throws NoSuchElementException if the iteration has no more elements
+         */
+        @Override
+        public E next() {
+            if(!hasNext()){
+                throw new NoSuchElementException();
+            }
+            else{
+                E item = current.getData();
+                current = current.getNext();
+                return item;
+            }
+
         }
     }
 }

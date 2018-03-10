@@ -17,6 +17,11 @@ public interface IList<E> extends Iterable<E> {
     E first() throws NoSuchElementException;
 
     /**
+     * Gir størrelsen på listen.
+     */
+    int getSize();
+
+    /**
      * ,* Returnerer alle elementene i listen bortsett fra det
      * ,* første.
      * ,*
@@ -81,7 +86,7 @@ public interface IList<E> extends Iterable<E> {
      * ,* @param listen som blir lagt til.
      * ,
      */
-    void append(IList<? super E> list);
+    void append(IList<? extends E> list);
 
     /**
      * ,* Legger til alle elementene i den angitte listen på
@@ -90,7 +95,7 @@ public interface IList<E> extends Iterable<E> {
      * ,* @param list listen som blir lagt til
      * ,
      */
-    void prepend(IList<? super E> list);
+    void prepend(IList<? extends E> list);
 
     /**
      * ,* Slår sammen flere lister
@@ -100,7 +105,7 @@ public interface IList<E> extends Iterable<E> {
      * ,* skal slås sammen.
      * ,
      */
-    IList<E> concat(IList<? super E>... lists);
+    IList<E> concat(IList<? extends E>... lists);
 
     /**
      * ,* Sorterer listen ved hjelp av en

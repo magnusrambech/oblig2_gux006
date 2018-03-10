@@ -1,4 +1,5 @@
 
+import com.sun.xml.internal.ws.developer.UsesJAXBContext;
 import org.junit.jupiter.api.Test;
 import sun.awt.image.ImageWatched;
 
@@ -65,10 +66,10 @@ class ListTest {
      */
     @Test
     void oppg1_emptyPut(){
-        LinkedList<Integer> list = new LinkedList<Integer>();
-        assertEquals(list.size,0);
+        IList<Integer> list = new LinkedList<Integer>();
+        assertEquals(list.getSize(),0);
         list.add(10);
-        assertEquals(1, list.size);
+        assertEquals(1, list.getSize());
     }
 
     /**
@@ -76,7 +77,7 @@ class ListTest {
      */
     @Test
     void oppg1_emptyRemove(){
-        LinkedList<Integer> list = new LinkedList<Integer>();
+        IList<Integer> list = new LinkedList<Integer>();
         assertThrows(NoSuchElementException.class, list::remove);
     }
 
@@ -85,7 +86,7 @@ class ListTest {
      */
     @Test
     void oppg1_singleEntryFirst(){
-        LinkedList<Integer> list = new LinkedList<Integer>();
+        IList<Integer> list = new LinkedList<Integer>();
         int i = 10;
         list.add(i);
         assertNotNull(list.first());
@@ -96,7 +97,7 @@ class ListTest {
      */
     @Test
     void oppg1_singleEntryRest(){
-        LinkedList<Integer> list = new LinkedList<Integer>();
+        IList<Integer> list = new LinkedList<Integer>();
         int i = 10;
         list.add(i);
 
@@ -109,7 +110,7 @@ class ListTest {
      */
     @Test
     void oppg1_singleEntryAdd(){
-        LinkedList<Integer> list = new LinkedList<Integer>();
+       IList<Integer> list = new LinkedList<Integer>();
         int i = 10;
         int y = 20;
         list.add(i);
@@ -123,7 +124,7 @@ class ListTest {
      */
     @Test
     void oppg1_singleEntryPut(){
-        LinkedList<Integer> list = new LinkedList<Integer>();
+        IList<Integer> list = new LinkedList<Integer>();
         int i = 10;
         int y = 20;
         list.add(i);
@@ -137,11 +138,104 @@ class ListTest {
      */
     @Test
     void oppg1_singleEntryRemove(){
-        LinkedList<Integer> list = new LinkedList<Integer>();
+        IList<Integer> list = new LinkedList<Integer>();
         int i = 10;
         list.add(i);
         assertNotNull(list.remove());
 
+    }
+    @Test
+    void oppg1_multipleEntries_first(){
+        IList<String> list = new LinkedList<String>();
+        String a = "En";
+        String b = "To";
+        String c = "Tre";
+        list.add(a);
+        list.add(b);
+        list.add(c);
+        assertEquals(c, list.first());
+
+    }
+    @Test
+    void oppg1_multipleEntries_rest(){
+        IList<String> list = new LinkedList<String>();
+        String a = "En";
+        String b = "To";
+        String c = "Tre";
+        list.add(a);
+        list.add(b);
+        list.add(c);
+        IList<String> restList = list.rest();
+        assertTrue(restList.contains(a));
+        assertTrue(restList.contains(b));
+        assertFalse(restList.contains(c));
+    }
+    @Test
+    void oppg1_multipleEntries_add(){
+        IList<String> list = new LinkedList<String>();
+        assertEquals(0,list.getSize());
+        String a = "En";
+        String b = "To";
+        String c = "Tre";
+        list.add(a);
+        list.add(b);
+        list.add(c);
+        assertEquals(3,list.getSize());
+
+
+    }
+    @Test
+    void oppg1_multipleEntries_put(){
+        IList<String> list = new LinkedList<String>();
+        assertEquals(0,list.getSize());
+        String a = "En";
+        String b = "To";
+        String c = "Tre";
+        list.add(a);
+        list.add(b);
+        list.add(c);
+        assertEquals(3,list.getSize());
+        assertEquals(c, list.first());
+
+    }
+    @Test
+    void oppg1_multipleEntries_remove(){
+        IList<String> list = new LinkedList<String>();
+        String a = "En";
+        String b = "To";
+        String c = "Tre";
+        list.add(a);
+        list.add(b);
+        list.add(c);
+        assertEquals(3, list.getSize());
+        list.remove();
+        assertEquals(2, list.getSize());
+    }
+
+
+
+
+
+    @Test
+    void oppg2_removeObject_exists(){
+        LinkedList<Integer> list = new LinkedList<Integer>();
+        int i = 10;
+        list.add(i);
+        assertTrue(list.remove(i));
+    }
+    @Test
+    void oppg2_removeObject_empty(){
+        LinkedList<Integer> list = new LinkedList<Integer>();
+        int i = 10;
+        assertFalse(list.remove(i));
+    }
+    @Test
+    void oppg2_removeObject_notExists(){
+        LinkedList<String> list = new LinkedList<String>();
+        String x = "finnes";
+        String y = "finnnes ikke";
+        list.add(x);
+        assertFalse(list.remove(y));
     }
 
 
