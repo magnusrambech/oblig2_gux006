@@ -379,7 +379,7 @@ public class LinkedList<E> implements IList<E>{
     }
 
     /**
-     * ,* Fjerner alle elementene i listen.
+     * ,* Fjerner alle eslementene i listen.
      * ,
      */
     @Override
