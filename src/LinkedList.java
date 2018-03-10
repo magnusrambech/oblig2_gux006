@@ -102,10 +102,11 @@ public class LinkedList<E> implements IList<E>{
      */
     @Override
     public boolean add(E elem) {
-        Node curr = head;
+        Node curr = this.head;
         Node newNode = new Node(elem);
         if(isEmpty()){
             this.head = newNode;
+            curr = this.head;
         }
         while(curr.hasNext()){
             curr=curr.getNext();
@@ -247,7 +248,7 @@ public class LinkedList<E> implements IList<E>{
      */
     @Override
     public boolean isEmpty() {
-        return false;
+        return size==0;
     }
 
     /**
@@ -315,6 +316,7 @@ public class LinkedList<E> implements IList<E>{
     @Override
     public void sort(Comparator<? super E> c) {
 
+        c.compare(head.getData(),head.getNext().getData());
     }
 
     /**
@@ -328,6 +330,15 @@ public class LinkedList<E> implements IList<E>{
      */
     @Override
     public void filter(Predicate<? super E> filter) {
+        Node node = head;
+        while (node != null){
+            System.out.println(filter.test(node.getData()));
+            if (filter.test(node.getData())){
+                Object data = node.getData();
+                System.out.println(this.remove(data));
+            }
+            node = node.getNext();
+        }
 
     }
 
@@ -460,5 +471,6 @@ public class LinkedList<E> implements IList<E>{
 
         }
     }
+
 }
 
