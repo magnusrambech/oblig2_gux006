@@ -102,18 +102,22 @@ public class LinkedList<E> implements IList<E>{
      */
     @Override
     public boolean add(E elem) {
-        Node curr = this.head;
+        Node current = head;
         Node newNode = new Node(elem);
-        if(isEmpty()){
-            this.head = newNode;
-            curr = this.head;
+
+        if (isEmpty()) {
+            head = newNode;
+            size++;
+            return true;
+        } else {
+            while (current.getNext() != null) {
+                current = current.getNext();
+            }
         }
-        while(curr.hasNext()){
-            curr=curr.getNext();
-        }
-        curr.next = newNode;
+        current.setNext(newNode);
         size++;
         return true;
+
     }
 
     /**
@@ -335,7 +339,6 @@ public class LinkedList<E> implements IList<E>{
             System.out.println(filter.test(node.getData()));
             if (filter.test(node.getData())){
                 Object data = node.getData();
-                System.out.println(this.remove(data));
             }
             node = node.getNext();
         }
@@ -410,6 +413,12 @@ public class LinkedList<E> implements IList<E>{
     }
 
 
+    public void printList(){
+        Iterator it = this.iterator();
+        while(it.hasNext()){
+            System.out.println(it.next());
+        }
+    }
     public class Node {
 
 

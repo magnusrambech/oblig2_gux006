@@ -164,4 +164,9 @@ public interface IList<E> extends Iterable<E> {
      * ,
      */
     void clear();
+
+    /**
+     * Printer ut listen
+     */
+    void printList();
 }

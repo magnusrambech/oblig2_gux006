@@ -114,9 +114,10 @@ class ListTest {
         int i = 10;
         int y = 20;
         list.add(i);
-        assertEquals(list.size(),1);
+        assertEquals(1,list.getSize());
         list.add(y);
-        assertEquals(list.size(), 2);
+        assertEquals(2,list.getSize());
+
     }
 
     /**
@@ -170,6 +171,10 @@ class ListTest {
         assertTrue(restList.contains(b));
         assertFalse(restList.contains(c));
     }
+
+    /**
+     * Tester add-metoden ved flere gjentagelser.
+     */
     @Test
     void oppg1_multipleEntries_add(){
         IList<String> list = new LinkedList<String>();
@@ -178,8 +183,9 @@ class ListTest {
         String b = "To";
         String c = "Tre";
         list.add(a);
-        list.add(b);
+        list.put(b);
         list.add(c);
+        assertEquals(list.first(),b);
         assertEquals(3,list.getSize());
 
 
@@ -191,11 +197,11 @@ class ListTest {
         String a = "En";
         String b = "To";
         String c = "Tre";
-        list.add(a);
-        list.add(b);
+        list.put(a);
+        list.put(b);
         list.add(c);
         assertEquals(3,list.getSize());
-        assertEquals(c, list.first());
+        assertEquals(b, list.first());
 
     }
     @Test
@@ -236,6 +242,20 @@ class ListTest {
         String y = "finnnes ikke";
         list.add(x);
         assertFalse(list.remove(y));
+    }
+
+    @Test
+    void oppg3_containsTest(){
+        LinkedList<String> list = new LinkedList<String>();
+        String x = "finnes";
+        String y = "finnnes også!";
+        String z = "finnes ikke..";
+        list.add(y);
+        list.add(y);
+        list.add(x);
+        System.out.println("Head er: " + list.first());
+        assertTrue(list.contains(x));
+        assertFalse(list.contains(z));
     }
 
 
