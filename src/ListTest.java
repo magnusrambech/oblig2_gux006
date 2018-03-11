@@ -692,7 +692,6 @@ class ListTest {
         assertEquals(result, "test");
         assertEquals(3, list.size());
     }
-
     @Test
     void ex1_FastSort() {
         // Se ekstraoppgave 1
@@ -713,4 +712,6 @@ class ListTest {
 
 
     }
+
+
 }

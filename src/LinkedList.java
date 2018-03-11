@@ -74,7 +74,6 @@ public class LinkedList<E> implements IList<E>{
     public IList<E> rest() {
         IList<E> returnList = new LinkedList<E>();
         if(size<2){
-            System.out.println("Skal funke..");
             returnList= null;
         }
         else {
@@ -151,7 +150,7 @@ public class LinkedList<E> implements IList<E>{
      */
     @Override
     public E remove() throws NoSuchElementException {
-        if(head.hasNext()){
+        if(head!=null && head.hasNext()){
             Node nodeToRemove = head;
             head = head.getNext();
             size--;
