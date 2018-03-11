@@ -342,7 +342,6 @@ public class LinkedList<E> implements IList<E>{
         while (node != null){
             if (filter.test(node.getData())){
                 Object data = node.getData();
-                System.out.println(data);
                 this.remove(data);
             }
             node = node.getNext();
@@ -391,7 +390,13 @@ public class LinkedList<E> implements IList<E>{
      */
     @Override
     public <T> T reduce(T t, BiFunction<T, ? super E, T> f) {
-        return null;
+        T finalValue = t;
+        Iterator it = this.iterator();
+        while(it.hasNext()){
+            E data = (E)it.next();
+            finalValue = f.apply(finalValue, data);
+        }
+        return finalValue;
     }
 
     /**

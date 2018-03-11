@@ -1,5 +1,7 @@
 public class Main {
     public static void main(String[] args) {
+
+        // Lager ny liste med et element "0".
         IList<Integer> myList = new LinkedList<Integer>(0);
         myList.add(1);
         myList.add(2);

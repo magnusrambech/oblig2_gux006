@@ -2,35 +2,14 @@
 import com.sun.xml.internal.ws.developer.UsesJAXBContext;
 import org.junit.jupiter.api.Test;
 import sun.awt.image.ImageWatched;
-
 import java.time.Duration;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ListTest {
-    @Test
-    void oppg8_sortIntegers() {
-        // Se oppgave 8
-        LinkedList<Integer> list = new LinkedList<Integer>();
-        List<Integer> values = Arrays.asList(3, 8, 4, 7, 10, 6, 1, 2, 9, 5);
-
-        for (Integer value : values) {
-            list.add(value);
-        }
-        list.sort(Comparator.comparingInt(x -> x));
 
 
-        int n = list.remove();
-        while (list.size() > 0) {
-            int m = list.remove();
-            if (n > m) {
-                fail("Integer liist is not sorted.");
-            }
-            n = m;
-        }
-
-    }
 
     /**
      * Test av First() på tom liste.
@@ -310,11 +289,19 @@ class ListTest {
         assertTrue(list.contains(y));
 
     }
+
+    /**
+     * Tester isEmpty når listen er tom.
+     */
     @Test
     void oppg3_isEmpty_empty(){
         LinkedList<String> list = new LinkedList<String>();
         assertTrue(list.isEmpty());
     }
+
+    /**
+     * Tester isEmpty når listen ikke er tom.
+     */
     @Test
     void oppg3_isEmpty_notEmpty(){
         LinkedList<String> list = new LinkedList<String>();
@@ -323,6 +310,9 @@ class ListTest {
         assertFalse(list.isEmpty());
     }
 
+    /**
+     * Tester prepend når listene er tommme. Forveneter exceprion.
+     */
     @Test
     void oppg4_prepend_empty(){
         IList<Integer> list = new LinkedList<Integer>();
@@ -332,6 +322,9 @@ class ListTest {
         assertThrows(NoSuchElementException.class, list::first);
     }
 
+    /**
+     * Tester prepend når listene ikke er tomme.
+     */
     @Test
     void oppg4_prepend_notEmpty(){
         IList<Integer> list = new LinkedList<Integer>();
@@ -347,6 +340,10 @@ class ListTest {
         assertEquals(3, (int)list.first());
 
     }
+
+    /**
+     * Tester append når begge listene er tomme. Forventer exception i first().
+     */
     @Test
     void oppg4_append_empty(){
         IList<Integer> list = new LinkedList<Integer>();
@@ -355,17 +352,21 @@ class ListTest {
         list.append(prepList);
         assertThrows(NoSuchElementException.class, list::first);
     }
+
+    /**
+     * Tester append når listen(e) ikke er tomme. list inneholder "0" fra konstruktøren, og preplist inneholder "6" og "7".
+     */
     @Test
     void oppg4_append_notEmpty(){
-        IList<Integer> list = new LinkedList<Integer>();
+        IList<Integer> list = new LinkedList<Integer>(5);
         IList<Integer> prepList = new LinkedList<Integer>();
 
         prepList.add(6);
         prepList.add(7);
         list.append(prepList);
 
-        assertEquals(2, list.size());
-        assertEquals(6, (int)list.first());
+        assertEquals(3, list.size());
+        assertEquals(5, (int)list.first());
     }
 
     /**
@@ -461,8 +462,9 @@ class ListTest {
     }
 
 
-
-
+    /**
+     * Sorterer boksatavene i listen til å være i alfabetisk rekkefølge.
+     */
     @Test
     void oppg8_sortStrings() {
         // Se oppgave 8
@@ -486,7 +488,86 @@ class ListTest {
 
         }
     }
+    /**
+     * Tester sortering av integers i stigende rekkefølge.
+     */
+    @Test
+    void oppg8_sortIntegers() {
+        // Se oppgave 8
+        LinkedList<Integer> list = new LinkedList<Integer>();
+        List<Integer> values = Arrays.asList(3, 8, 4, 7, 10, 6, 1, 2, 9, 5);
 
+        for (Integer value : values) {
+            list.add(value);
+        }
+        list.sort(Comparator.comparingInt(x -> x));
+
+
+        int n = list.remove();
+        while (list.size() > 0) {
+            int m = list.remove();
+            if (n > m) {
+                fail("Integer liist is not sorted.");
+            }
+            n = m;
+        }
+
+    }
+
+
+    /**
+     * Filtrerer ut alle navn på 3 bokstaver
+     */
+    @Test
+    void oppg9_filter_names() {
+        // Se oppgave 9
+        List<String> values = Arrays.asList("Thomas","Magnus","Ina","Kari","Ola","test3","Per");
+
+        IList<String> list = new LinkedList<>();
+        for (String value : values) {
+            list.add(value);
+        }
+
+        list.filter(n -> n.length()==3);
+        String n = list.remove();
+        while(list.size() > 0) {
+            if (n.length()==3) {
+                fail("List contains filtered out elements.");
+            }
+            n = list.remove();
+
+        }
+
+    }
+    /**
+     * Filtrerer ut alle forekomster av "ugress" fra listen, også når "ugress" forekommer som en del av en streng.
+     */
+    @Test
+    void oppg9_filter_Strings() {
+        // Se oppgave 9
+        List<String> values = Arrays.asList("test","ugress","test2","filter","ugress","test3","testugresstest");
+
+        IList<String> list = new LinkedList<>();
+        for (String value : values) {
+            list.add(value);
+        }
+
+        list.filter(n -> n.contains("ugress"));
+
+        String n = list.remove();
+        while(list.size() > 0) {
+            if (n.equals("ugress")) {
+                fail("List contains filtered out elements.");
+            }
+            n = list.remove();
+
+        }
+
+    }
+
+    /**
+     * Filtrerer ut alle oddetall fra listen.
+     */
     @Test
     void oppg9_filter() {
         // Se oppgave 9
@@ -510,6 +591,9 @@ class ListTest {
 
     }
 
+    /**
+     * Gjør om strengene i listen til tall
+     */
     @Test
     void oppg10_map() {
         // Se oppgave 10
@@ -532,6 +616,34 @@ class ListTest {
         }
     }
 
+    /**
+     * Endrer alle strengene til upper case
+     */
+    @Test
+    void oppg10_map_toUppercase() {
+        List<String> values = Arrays.asList("magnus rambech", "thomas rognes", "tord kvifte", "kent hansen", "ola normann");
+
+        IList<String> list = new LinkedList<>();
+        for (String value : values) {
+            list.add(value);
+        }
+
+        IList<String> result = list.map(String::toUpperCase);
+
+        List<String> target = Arrays.asList("MAGNUS RAMBECH", "THOMAS ROGNES", "TORD KVIFTE", "KENT HANSEN", "OLA NORMANN");
+
+        for (String t : target) {
+            if (!result.remove().equals(t)) {
+                fail("Result of map gives the wrong value.");
+            }
+        }
+    }
+
+
+
+    /**
+     * Legger sammen alle tallene i listen.
+     */
     @Test
     void oppg11_reduceInts() {
         // Se oppgave 11
@@ -547,6 +659,9 @@ class ListTest {
         assertEquals(result, 5*((1 + 5)/2));
     }
 
+    /**
+     * Slår sammen alle strengene og setter inn "t".
+     */
     @Test
     void oppg11_reduceStrings() {
         List<String> values = Arrays.asList("e", "s", "t");
@@ -558,6 +673,24 @@ class ListTest {
         String result = list.reduce("t", (acc, s) -> acc + s);
 
         assertEquals(result, "test");
+    }
+
+    /**
+     * Slår sammen alle strengene og setter inn "t", og sjekker at den gamle listen fortsatt har alle elementene etter reduce (sjekker feil bruk av remove).
+     */
+    @Test
+    void oppg11_reduceStrings_andCheckSize() {
+        List<String> values = Arrays.asList("e", "s", "t");
+        IList<String> list = new LinkedList<>();
+        for (String s : values) {
+            list.add(s);
+        }
+        assertEquals(3, list.size());
+
+        String result = list.reduce("t", (acc, s) -> acc + s);
+
+        assertEquals(result, "test");
+        assertEquals(3, list.size());
     }
 
     @Test
