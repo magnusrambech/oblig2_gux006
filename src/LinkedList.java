@@ -48,9 +48,6 @@ public class LinkedList<E> implements IList<E>{
             this.put(elem);
         }
 
-        public int getSize(){
-        return size;
-        }
     /**
      * ,* Gir det første elementet i listen.
      * ,*
@@ -60,7 +57,10 @@ public class LinkedList<E> implements IList<E>{
      */
     @Override
     public E first() throws NoSuchElementException {
-        return head.getData();
+        if(head!=null){
+            return head.getData();
+        }
+        throw new NoSuchElementException();
     }
 
     /**
@@ -268,8 +268,8 @@ public class LinkedList<E> implements IList<E>{
      */
     @Override
     public void append(IList<? extends E> list) {
-        for (int i = 0; i < list.size(); i++) {
-            this.add((E)list.remove());
+        for(E elem : list){
+            this.add(list.remove());
         }
     }
 
@@ -284,8 +284,8 @@ public class LinkedList<E> implements IList<E>{
      */
     @Override
     public void prepend(IList<? extends E> list) {
-        for (int i = 0; i <= list.size(); i++) {
-            this.put((E) list.remove());
+        for(E elem:list){
+            this.put(list.remove());
         }
     }
 
@@ -323,6 +323,8 @@ public class LinkedList<E> implements IList<E>{
     public void sort(Comparator<? super E> c) {
 
         c.compare(head.getData(),head.getNext().getData());
+
+
     }
 
     /**
@@ -361,7 +363,15 @@ public class LinkedList<E> implements IList<E>{
      */
     @Override
     public <U> IList<U> map(Function<? super E, ? extends U> f) {
-        return null;
+        IList<U> mappedList = new LinkedList<U>();
+        Iterator it = this.iterator();
+        while(it.hasNext()){
+            E data = (E)it.next();
+            E applied = (E)f.apply(data);
+            mappedList.add((U)applied);
+        }
+
+        return mappedList;
     }
 
     /**
@@ -392,7 +402,7 @@ public class LinkedList<E> implements IList<E>{
      */
     @Override
     public int size() {
-        return 0;
+        return size;
     }
 
     /**

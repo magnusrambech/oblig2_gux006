@@ -68,9 +68,9 @@ class ListTest {
     @Test
     void oppg1_emptyPut(){
         IList<Integer> list = new LinkedList<Integer>();
-        assertEquals(list.getSize(),0);
+        assertEquals(list.size(),0);
         list.add(10);
-        assertEquals(1, list.getSize());
+        assertEquals(1, list.size());
         assertEquals(10,(int)list.first());
     }
 
@@ -94,7 +94,7 @@ class ListTest {
         list.add(i);
         list.add(j);
         assertEquals(10,(int)list.first());
-        assertEquals(2,list.getSize());
+        assertEquals(2,list.size());
 
     }
 
@@ -120,9 +120,9 @@ class ListTest {
         int i = 10;
         int y = 20;
         list.add(i);
-        assertEquals(1,list.getSize());
+        assertEquals(1,list.size());
         list.add(y);
-        assertEquals(2,list.getSize());
+        assertEquals(2,list.size());
         assertEquals(i,(int)list.first());
 
     }
@@ -136,9 +136,9 @@ class ListTest {
         int i = 10;
         int y = 20;
         list.put(i);
-        assertEquals(1,list.getSize());
+        assertEquals(1,list.size());
         list.put(y);
-        assertEquals(2, list.getSize());
+        assertEquals(2, list.size());
         assertEquals(y, (int)list.first());
     }
 
@@ -195,7 +195,7 @@ class ListTest {
     @Test
     void oppg1_multipleEntries_add(){
         IList<String> list = new LinkedList<String>();
-        assertEquals(0,list.getSize());
+        assertEquals(0,list.size());
         String a = "En";
         String b = "To";
         String c = "Tre";
@@ -203,7 +203,7 @@ class ListTest {
         list.put(b);
         list.add(c);
         assertEquals(list.first(),b);
-        assertEquals(3,list.getSize());
+        assertEquals(3,list.size());
     }
 
     /**
@@ -212,14 +212,14 @@ class ListTest {
     @Test
     void oppg1_multipleEntries_put(){
         IList<String> list = new LinkedList<String>();
-        assertEquals(0,list.getSize());
+        assertEquals(0,list.size());
         String a = "En";
         String b = "To";
         String c = "Tre";
         list.put(a);
         list.add(c);
         list.put(b);
-        assertEquals(3,list.getSize());
+        assertEquals(3,list.size());
         assertEquals(b, list.first());
 
     }
@@ -236,9 +236,9 @@ class ListTest {
         list.add(a);
         list.add(b);
         list.add(c);
-        assertEquals(3, list.getSize());
+        assertEquals(3, list.size());
         list.remove();
-        assertEquals(2, list.getSize());
+        assertEquals(2, list.size());
         assertEquals(b, list.first());
     }
 
@@ -321,6 +321,143 @@ class ListTest {
         assertTrue(list.isEmpty());
         list.add("test");
         assertFalse(list.isEmpty());
+    }
+
+    @Test
+    void oppg4_prepend_empty(){
+        IList<Integer> list = new LinkedList<Integer>();
+        IList<Integer> prepList = new LinkedList<Integer>();
+
+        list.prepend(prepList);
+        assertThrows(NoSuchElementException.class, list::first);
+    }
+
+    @Test
+    void oppg4_prepend_notEmpty(){
+        IList<Integer> list = new LinkedList<Integer>();
+        IList<Integer> prepList = new LinkedList<Integer>();
+
+        list.add(1);
+
+        prepList.add(2);
+        prepList.add(3);
+        list.prepend(prepList);
+
+        assertEquals(3, list.size());
+        assertEquals(3, (int)list.first());
+
+    }
+    @Test
+    void oppg4_append_empty(){
+        IList<Integer> list = new LinkedList<Integer>();
+        IList<Integer> prepList = new LinkedList<Integer>();
+
+        list.append(prepList);
+        assertThrows(NoSuchElementException.class, list::first);
+    }
+    @Test
+    void oppg4_append_notEmpty(){
+        IList<Integer> list = new LinkedList<Integer>();
+        IList<Integer> prepList = new LinkedList<Integer>();
+
+        prepList.add(6);
+        prepList.add(7);
+        list.append(prepList);
+
+        assertEquals(2, list.size());
+        assertEquals(6, (int)list.first());
+    }
+
+    /**
+     * Test av concat med 3 lister som alle har elementer i seg.
+     */
+    @Test
+    void oppg5_concat_withEntriesInAll(){
+        IList<String> conc1 = new LinkedList<String>();
+        IList<String> conc2 = new LinkedList<String>();
+        IList<String> conc3 = new LinkedList<String>();
+
+        conc1.add("1");
+        conc1.add("2");
+
+        conc2.add("3");
+        conc2.add("4");
+
+        conc3.add("5");
+        conc3.add("6");
+
+        IList<String> conc4 = new LinkedList<String>();
+        conc4 = conc4.concat(conc1,conc2,conc3);
+
+        assertEquals(6, conc4.size());
+        assertEquals("1",conc4.first());
+    }
+
+    /**
+     * Test av concat når èn av listene er tomme
+     */
+    @Test
+    void oppg5_concat_withEntriesInSome(){
+        IList<String> conc1 = new LinkedList<String>();
+        IList<String> conc2 = new LinkedList<String>();
+        IList<String> conc3 = new LinkedList<String>();
+
+        conc1.add("1");
+        conc1.add("2");
+
+        conc3.add("5");
+        conc3.add("6");
+
+        IList<String> conc4 = new LinkedList<String>();
+        conc4 = conc4.concat(conc1,conc2,conc3);
+
+        assertEquals(4, conc4.size());
+        assertEquals("1",conc4.first());
+
+    }
+
+    /**
+     * Test av concat når alle listene er tomme
+     */
+    @Test
+    void oppg5_concat_withNoEntires(){
+        IList<String> conc1 = new LinkedList<String>();
+        IList<String> conc2 = new LinkedList<String>();
+        IList<String> conc3 = new LinkedList<String>();
+        IList<String> conc4 = new LinkedList<String>();
+        conc4 = conc4.concat(conc1,conc2,conc3);
+
+        assertEquals(0, conc4.size());
+        assertThrows(NoSuchElementException.class, conc4::first);
+
+    }
+
+    /**
+     * Test av iterator når listen er tom
+     */
+    @Test
+    void oppg7_iterator_empty(){
+        IList<String> myList = new LinkedList<String>();
+        Iterator it = myList.iterator();
+
+        assertFalse(it.hasNext());
+    }
+
+    /**
+     * Test av iterator når listen ikke er tom
+     */
+    @Test
+    void oppg7_iterator_notEmpty(){
+        IList<String> myList = new LinkedList<String>();
+        myList.add("1");
+        myList.add("2");
+        myList.add("3");
+
+        Iterator it = myList.iterator();
+
+        while(it.hasNext()){
+            assertNotNull(it.next());
+        }
     }
 
 

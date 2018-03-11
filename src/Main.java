@@ -11,12 +11,52 @@ public class Main {
         System.out.println("______________Printer listen__________________");
         myList.printList();
 
-        myList.remove();
-        System.out.println("______________Fjerner første element__________________");
+
+        System.out.println("______________Fjerner 6 første element__________________");
         myList.printList();
-        myList.put(1995);
-        System.out.println("______________Putter inn '1995' fremst i listen__________________");
+
+
+        System.out.println("______________Test av prepend__________________");
+        IList<Integer> prepList = new LinkedList<Integer>();
+        prepList.add(7);
+        prepList.add(8);
+        prepList.add(9);
+        prepList.add(10);
+
+
+        myList.prepend(prepList);
         myList.printList();
+
+        System.out.println("______________Test av append__________________");
+        IList<Integer> appList = new LinkedList<Integer>();
+        appList.add(7);
+        appList.add(8);
+        appList.add(9);
+        appList.add(10);
+
+
+        myList.append(appList);
+        myList.printList();
+
+
+        System.out.println("______________Test av concat__________________");
+        IList<String> conc1 = new LinkedList<String>();
+        IList<String> conc2 = new LinkedList<String>();
+        IList<String> conc3 = new LinkedList<String>();
+
+        conc1.add("1");
+        conc1.add("2");
+
+        conc2.add("3");
+        conc2.add("4");
+
+        conc3.add("5");
+        conc3.add("6");
+
+        IList<String> conc4 = new LinkedList<String>();
+        conc4 = conc4.concat(conc1,conc2,conc3);
+
+        conc4.printList();
 
     }
 }

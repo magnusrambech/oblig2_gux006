@@ -16,10 +16,6 @@ public interface IList<E> extends Iterable<E> {
      */
     E first() throws NoSuchElementException;
 
-    /**
-     * Gir størrelsen på listen.
-     */
-    int getSize();
 
     /**
      * ,* Returnerer alle elementene i listen bortsett fra det
