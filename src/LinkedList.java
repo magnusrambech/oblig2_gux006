@@ -22,6 +22,7 @@ public class LinkedList<E> implements IList<E>{
         public LinkedList(E elem){
             Node newNode = new Node(elem);
             head = newNode;
+            size++;
         }
 
     /**
@@ -73,7 +74,8 @@ public class LinkedList<E> implements IList<E>{
     public IList<E> rest() {
         IList<E> returnList = new LinkedList<E>();
         if(size<2){
-            return null;
+            System.out.println("Skal funke..");
+            returnList= null;
         }
         else {
 
@@ -336,9 +338,10 @@ public class LinkedList<E> implements IList<E>{
     public void filter(Predicate<? super E> filter) {
         Node node = head;
         while (node != null){
-            System.out.println(filter.test(node.getData()));
             if (filter.test(node.getData())){
                 Object data = node.getData();
+                System.out.println(data);
+                this.remove(data);
             }
             node = node.getNext();
         }
@@ -412,7 +415,9 @@ public class LinkedList<E> implements IList<E>{
         return it;
     }
 
-
+    /**
+     * Printer ut alle elemente i listen
+     */
     public void printList(){
         Iterator it = this.iterator();
         while(it.hasNext()){

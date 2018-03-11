@@ -47,7 +47,8 @@ class ListTest {
     @Test
     void oppg1_emptyRest(){
         LinkedList<Integer> list = new LinkedList<Integer>();
-        assertThrows(NoSuchElementException.class, list::rest);
+        IList test = list.rest();
+        assertNull(test);
     }
 
     /**
@@ -70,10 +71,11 @@ class ListTest {
         assertEquals(list.getSize(),0);
         list.add(10);
         assertEquals(1, list.getSize());
+        assertEquals(10,(int)list.first());
     }
 
     /**
-     * Test av remove på tom jsliste.
+     * Test av remove på tom liste.
      */
     @Test
     void oppg1_emptyRemove(){
@@ -88,8 +90,12 @@ class ListTest {
     void oppg1_singleEntryFirst(){
         IList<Integer> list = new LinkedList<Integer>();
         int i = 10;
+        int j = 20;
         list.add(i);
-        assertNotNull(list.first());
+        list.add(j);
+        assertEquals(10,(int)list.first());
+        assertEquals(2,list.getSize());
+
     }
 
     /**
@@ -102,7 +108,7 @@ class ListTest {
         list.add(i);
 
         IList<Integer> restList = list.rest();
-        assertEquals(null, restList.first());
+        assertEquals(null, restList);
     }
 
     /**
@@ -117,6 +123,7 @@ class ListTest {
         assertEquals(1,list.getSize());
         list.add(y);
         assertEquals(2,list.getSize());
+        assertEquals(i,(int)list.first());
 
     }
 
@@ -128,10 +135,11 @@ class ListTest {
         IList<Integer> list = new LinkedList<Integer>();
         int i = 10;
         int y = 20;
-        list.add(i);
-        assertEquals(list.size(),1);
-        list.add(y);
-        assertEquals(list.size(), 2);
+        list.put(i);
+        assertEquals(1,list.getSize());
+        list.put(y);
+        assertEquals(2, list.getSize());
+        assertEquals(y, (int)list.first());
     }
 
     /**
@@ -142,9 +150,13 @@ class ListTest {
         IList<Integer> list = new LinkedList<Integer>();
         int i = 10;
         list.add(i);
-        assertNotNull(list.remove());
+        assertEquals(i, (int)list.remove());
 
     }
+
+    /**
+     * Test av first når listen inneholder flere enn 1 element
+     */
     @Test
     void oppg1_multipleEntries_first(){
         IList<String> list = new LinkedList<String>();
@@ -154,26 +166,31 @@ class ListTest {
         list.add(a);
         list.add(b);
         list.add(c);
-        assertEquals(c, list.first());
+        assertEquals(a, list.first());
 
     }
+    /**
+     * Test av rest på liste med flere objekt
+     */
     @Test
-    void oppg1_multipleEntries_rest(){
-        IList<String> list = new LinkedList<String>();
-        String a = "En";
-        String b = "To";
-        String c = "Tre";
-        list.add(a);
-        list.add(b);
-        list.add(c);
-        IList<String> restList = list.rest();
-        assertTrue(restList.contains(a));
-        assertTrue(restList.contains(b));
-        assertFalse(restList.contains(c));
+    void oppg1_multipleEntriesRest(){
+        IList<Integer> list = new LinkedList<Integer>();
+        int i = 10;
+        int j = 20;
+        int k = 30;
+        list.add(i);
+        list.add(j);
+        list.add(k);
+        int x = list.first();
+
+        IList<Integer> restList = list.rest();
+        assertTrue(restList.contains(j));
+        assertTrue(restList.contains(k));
+        assertFalse(restList.contains(x));
     }
 
     /**
-     * Tester add-metoden ved flere gjentagelser.
+     * Test av add med flere elementer i listen.
      */
     @Test
     void oppg1_multipleEntries_add(){
@@ -187,9 +204,11 @@ class ListTest {
         list.add(c);
         assertEquals(list.first(),b);
         assertEquals(3,list.getSize());
-
-
     }
+
+    /**
+     * Test av put med flere elementer i listen
+     */
     @Test
     void oppg1_multipleEntries_put(){
         IList<String> list = new LinkedList<String>();
@@ -198,12 +217,16 @@ class ListTest {
         String b = "To";
         String c = "Tre";
         list.put(a);
-        list.put(b);
         list.add(c);
+        list.put(b);
         assertEquals(3,list.getSize());
         assertEquals(b, list.first());
 
     }
+
+    /**
+     * Test av remove med flere elementer i listen.
+     */
     @Test
     void oppg1_multipleEntries_remove(){
         IList<String> list = new LinkedList<String>();
@@ -216,12 +239,13 @@ class ListTest {
         assertEquals(3, list.getSize());
         list.remove();
         assertEquals(2, list.getSize());
+        assertEquals(b, list.first());
     }
 
 
-
-
-
+    /**
+     * Tester remove(object) når objektet finnes i listen
+     */
     @Test
     void oppg2_removeObject_exists(){
         LinkedList<Integer> list = new LinkedList<Integer>();
@@ -229,12 +253,18 @@ class ListTest {
         list.add(i);
         assertTrue(list.remove(i));
     }
+    /**
+     * Tester remove(object) når listen er tom.
+     */
     @Test
     void oppg2_removeObject_empty(){
         LinkedList<Integer> list = new LinkedList<Integer>();
         int i = 10;
         assertFalse(list.remove(i));
     }
+    /**
+     * Tester remove(object) når objektet ikke finnes.
+     */
     @Test
     void oppg2_removeObject_notExists(){
         LinkedList<String> list = new LinkedList<String>();
@@ -244,19 +274,55 @@ class ListTest {
         assertFalse(list.remove(y));
     }
 
+    /**
+     * Tester contains når listen er tom.
+     */
     @Test
-    void oppg3_containsTest(){
-        LinkedList<String> list = new LinkedList<String>();
+    void oppg3_containsTest_empty(){
+        IList<String> list = new LinkedList<String>();
+        assertFalse(list.contains("hei"));
+    }
+
+    /**
+     * Tester contains når listen ikke inneholder elementet og listen ikker er tom.
+     */
+    @Test
+    void oppg3_containsTest_notEmpty_notContains(){
+        IList<String> list = new LinkedList<String>();
+        list.add("Test1");
+        list.add("Test2");
+        list.add("Test3");
+        assertFalse(list.contains("Test4"));
+    }
+
+    /**
+     * Tester contains når elementet finnes i listen.
+     */
+    @Test
+    void oppg3_containsTest_notEmpty_contains(){
+        IList<String> list = new LinkedList<String>();
         String x = "finnes";
         String y = "finnnes også!";
         String z = "finnes ikke..";
         list.add(y);
-        list.add(y);
         list.add(x);
-        System.out.println("Head er: " + list.first());
         assertTrue(list.contains(x));
-        assertFalse(list.contains(z));
+        assertTrue(list.contains(y));
+
     }
+    @Test
+    void oppg3_isEmpty_empty(){
+        LinkedList<String> list = new LinkedList<String>();
+        assertTrue(list.isEmpty());
+    }
+    @Test
+    void oppg3_isEmpty_notEmpty(){
+        LinkedList<String> list = new LinkedList<String>();
+        assertTrue(list.isEmpty());
+        list.add("test");
+        assertFalse(list.isEmpty());
+    }
+
 
 
 
