@@ -8,45 +8,44 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public class LinkedList<E> implements IList<E>{
-        Node head;
-        int size;
+public class LinkedList<E> implements IList<E> {
+    Node head;
+    int size;
 
 
+    public LinkedList() {
+        this.size = 0;
+        this.head = null;
+    }
 
-
-        public LinkedList(){
-            this.size = 0;
-            this.head = null;
-        }
-        public LinkedList(E elem){
-            Node newNode = new Node(elem);
-            head = newNode;
-            size++;
-        }
+    public LinkedList(E elem) {
+        Node newNode = new Node(elem);
+        head = newNode;
+        size++;
+    }
 
     /**
      * Legger alle elementene fra en liste inn i en linked list.
+     *
      * @param elem
      * @param list
      */
     public LinkedList(E elem, List list) {
-            if (list != null) {
-                Iterator listIterator = list.iterator();
-                while(listIterator.hasNext()){
-                    Node newNode = new Node((E)listIterator.next());
-                    if(head==null){
-                       this.head = newNode;
-                    }
-                    else{
-                        newNode.next = head;
-                        this.head = newNode;
-                    }
-
+        if (list != null) {
+            Iterator listIterator = list.iterator();
+            while (listIterator.hasNext()) {
+                Node newNode = new Node((E) listIterator.next());
+                if (head == null) {
+                    this.head = newNode;
+                } else {
+                    newNode.next = head;
+                    this.head = newNode;
                 }
+
             }
-            this.put(elem);
         }
+        this.put(elem);
+    }
 
     /**
      * ,* Gir det første elementet i listen.
@@ -57,7 +56,7 @@ public class LinkedList<E> implements IList<E>{
      */
     @Override
     public E first() throws NoSuchElementException {
-        if(head!=null){
+        if (head != null) {
             return head.getData();
         }
         throw new NoSuchElementException();
@@ -73,24 +72,21 @@ public class LinkedList<E> implements IList<E>{
     @Override
     public IList<E> rest() {
         IList<E> returnList = new LinkedList<E>();
-        if(size<2){
-            returnList= null;
-        }
-        else {
+        if (size < 2) {
+            returnList = null;
+        } else {
 
             Node curr = head.getNext();
-            while(curr.getData()!=null){
+            while (curr.getData() != null) {
                 returnList.add(curr.getData());
-                if(curr.hasNext()){
+                if (curr.hasNext()) {
                     curr = curr.getNext();
-                }
-                else {
+                } else {
                     break;
                 }
             }
         }
         return returnList;
-
 
 
     }
@@ -130,10 +126,9 @@ public class LinkedList<E> implements IList<E>{
     @Override
     public boolean put(E elem) {
         Node newNode = new Node(elem);
-        if(isEmpty()){
+        if (isEmpty()) {
             this.head = newNode;
-        }
-        else{
+        } else {
             newNode.next = this.head;
             this.head = newNode;
         }
@@ -150,20 +145,18 @@ public class LinkedList<E> implements IList<E>{
      */
     @Override
     public E remove() throws NoSuchElementException {
-        if(head!=null && head.hasNext()){
+        if (head != null && head.hasNext()) {
             Node nodeToRemove = head;
             head = head.getNext();
             size--;
             return nodeToRemove.getData();
-        }
-        else if(isEmpty()){
+        } else if (isEmpty()) {
             throw new NoSuchElementException();
-        }
-        else{
+        } else {
             Node nodeToRemove = head;
             head = null;
             size--;
-            return  nodeToRemove.getData();
+            return nodeToRemove.getData();
         }
     }
 
@@ -179,28 +172,25 @@ public class LinkedList<E> implements IList<E>{
      */
     @Override
     public boolean remove(Object o) {
-        if(this.contains(o)){
-            if(head.getData() == o){
+        if (this.contains(o)) {
+            if (head.getData() == o) {
                 this.head = this.head.getNext();
                 size--;
                 return true;
-            }
-            else{
+            } else {
                 Node current = this.head;
                 Node prev = null;
-                while(current!= null){
-                    if(current.getData()==o){
-                        if(current.hasNext()){
+                while (current != null) {
+                    if (current.getData() == o) {
+                        if (current.hasNext()) {
                             prev.setNext(current.getNext());
-                        }
-                        else{
+                        } else {
                             prev.setNext(null);
                         }
-                        current=null;
+                        current = null;
                         size--;
                         return true;
-                    }
-                    else{
+                    } else {
                         prev = current;
                         current = current.getNext();
                     }
@@ -222,26 +212,23 @@ public class LinkedList<E> implements IList<E>{
      */
     @Override
     public boolean contains(Object o) {
-        if(isEmpty()){
+        if (isEmpty()) {
             return false;
-        }
-        else {
+        } else {
             Node curr = head;
-            while(curr!=null){
-                if(curr.getData() == o){
+            while (curr != null) {
+                if (curr.getData() == o) {
                     return true;
-                }
-                else{
-                    if(curr.hasNext()){
+                } else {
+                    if (curr.hasNext()) {
                         curr = curr.getNext();
-                    }
-                    else{
+                    } else {
                         curr = null;
                     }
                 }
 
             }
-        return false;
+            return false;
         }
     }
 
@@ -253,7 +240,7 @@ public class LinkedList<E> implements IList<E>{
      */
     @Override
     public boolean isEmpty() {
-        return size==0;
+        return size == 0;
     }
 
     /**
@@ -267,7 +254,7 @@ public class LinkedList<E> implements IList<E>{
      */
     @Override
     public void append(IList<? extends E> list) {
-        for(E elem : list){
+        for (E elem : list) {
             this.add(list.remove());
         }
     }
@@ -283,7 +270,7 @@ public class LinkedList<E> implements IList<E>{
      */
     @Override
     public void prepend(IList<? extends E> list) {
-        for(E elem:list){
+        for (E elem : list) {
             this.put(list.remove());
         }
     }
@@ -301,12 +288,12 @@ public class LinkedList<E> implements IList<E>{
     @Override
     public IList<E> concat(IList<? extends E>... lists) {
         IList<E> mergedList = new LinkedList<E>();
-       for(IList<? extends E> list : lists){
-           while(!list.isEmpty()){
-               mergedList.add(list.remove());
-           }
-       }
-       return mergedList;
+        for (IList<? extends E> list : lists) {
+            while (!list.isEmpty()) {
+                mergedList.add(list.remove());
+            }
+        }
+        return mergedList;
     }
 
     /**
@@ -320,9 +307,32 @@ public class LinkedList<E> implements IList<E>{
      */
     @Override
     public void sort(Comparator<? super E> c) {
+        boolean firstRound = true;
+        int accountFor = 0;
+        IList<E> sorted = new LinkedList<E>();
+        for (E elem : this) {
+            E currentLowest = elem;
+            Iterator it = this.iterator();
+            while (it.hasNext()) {
+                E data = (E) it.next();
 
-        c.compare(head.getData(),head.getNext().getData());
+                if (c.compare(currentLowest, data) > 0) {
+                    currentLowest = data;
+                } else {
+                }
+            }
+            sorted.add(currentLowest);
+            this.remove(currentLowest);
+        }
 
+
+        for (E elem : this) {
+            System.out.println(elem + " er fortsatt ikke sortert ");
+        }
+        this.clear();
+        for (E elem : sorted) {
+            this.add(elem);
+        }
 
     }
 
@@ -338,8 +348,8 @@ public class LinkedList<E> implements IList<E>{
     @Override
     public void filter(Predicate<? super E> filter) {
         Node node = head;
-        while (node != null){
-            if (filter.test(node.getData())){
+        while (node != null) {
+            if (filter.test(node.getData())) {
                 Object data = node.getData();
                 this.remove(data);
             }
@@ -363,10 +373,10 @@ public class LinkedList<E> implements IList<E>{
     public <U> IList<U> map(Function<? super E, ? extends U> f) {
         IList<U> mappedList = new LinkedList<U>();
         Iterator it = this.iterator();
-        while(it.hasNext()){
-            E data = (E)it.next();
-            E applied = (E)f.apply(data);
-            mappedList.add((U)applied);
+        while (it.hasNext()) {
+            E data = (E) it.next();
+            E applied = (E) f.apply(data);
+            mappedList.add((U) applied);
         }
 
         return mappedList;
@@ -391,8 +401,8 @@ public class LinkedList<E> implements IList<E>{
     public <T> T reduce(T t, BiFunction<T, ? super E, T> f) {
         T finalValue = t;
         Iterator it = this.iterator();
-        while(it.hasNext()){
-            E data = (E)it.next();
+        while (it.hasNext()) {
+            E data = (E) it.next();
             finalValue = f.apply(finalValue, data);
         }
         return finalValue;
@@ -415,7 +425,8 @@ public class LinkedList<E> implements IList<E>{
      */
     @Override
     public void clear() {
-
+        head = null;
+        size = 0;
     }
 
     /**
@@ -432,40 +443,44 @@ public class LinkedList<E> implements IList<E>{
     /**
      * Printer ut alle elemente i listen
      */
-    public void printList(){
+    public void printList() {
         Iterator it = this.iterator();
-        while(it.hasNext()){
+        while (it.hasNext()) {
             System.out.println(it.next());
         }
     }
+
     public class Node {
 
 
         private Node next;
         private E data;
 
-        public Node(E data){
+        public Node(E data) {
             this.data = data;
         }
-        public E getData(){
-            return  data;
+
+        public E getData() {
+            return data;
         }
+
         public Node getNext() {
             return next;
         }
-        public boolean hasNext(){
-            return next!=null;
+
+        public boolean hasNext() {
+            return next != null;
         }
-        public void setNext(Node e){
+
+        public void setNext(Node e) {
             this.next = e;
         }
 
     }
 
-    public class ListIterator implements Iterator<E>{
+    public class ListIterator implements Iterator<E> {
 
         Node current = head;
-
 
 
         /**
@@ -477,7 +492,7 @@ public class LinkedList<E> implements IList<E>{
          */
         @Override
         public boolean hasNext() {
-            return current!=null;
+            return current != null;
         }
 
         /**
@@ -488,10 +503,9 @@ public class LinkedList<E> implements IList<E>{
          */
         @Override
         public E next() {
-            if(!hasNext()){
+            if (!hasNext()) {
                 throw new NoSuchElementException();
-            }
-            else{
+            } else {
                 E item = current.getData();
                 current = current.getNext();
                 return item;
