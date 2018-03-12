@@ -173,7 +173,7 @@ public class LinkedList<E> implements IList<E> {
     @Override
     public boolean remove(Object o) {
         if (this.contains(o)) {
-            if (head.getData() == o) {
+            if (head.getData() .equals( o)) {
                 this.head = this.head.getNext();
                 size--;
                 return true;
@@ -181,7 +181,7 @@ public class LinkedList<E> implements IList<E> {
                 Node current = this.head;
                 Node prev = null;
                 while (current != null) {
-                    if (current.getData() == o) {
+                    if (current.getData().equals(o)) {
                         if (current.hasNext()) {
                             prev.setNext(current.getNext());
                         } else {
@@ -307,28 +307,21 @@ public class LinkedList<E> implements IList<E> {
      */
     @Override
     public void sort(Comparator<? super E> c) {
-        boolean firstRound = true;
-        int accountFor = 0;
         IList<E> sorted = new LinkedList<E>();
-        for (E elem : this) {
-            E currentLowest = elem;
-            Iterator it = this.iterator();
-            while (it.hasNext()) {
-                E data = (E) it.next();
+        int parentSize = size();
 
-                if (c.compare(currentLowest, data) > 0) {
-                    currentLowest = data;
-                } else {
+        while(sorted.size() < parentSize){
+            E smallest =head.getData();
+            for (E elem : this) {
+                if (c.compare(elem,smallest) < 0)
+                {
+                    smallest = elem;
                 }
             }
-            sorted.add(currentLowest);
-            this.remove(currentLowest);
+            sorted.add(smallest);
+            remove(smallest);
         }
 
-
-        for (E elem : this) {
-            System.out.println(elem + " er fortsatt ikke sortert ");
-        }
         this.clear();
         for (E elem : sorted) {
             this.add(elem);
