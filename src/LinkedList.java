@@ -164,7 +164,7 @@ public class LinkedList<E> implements IList<E> {
      * ,* Fjerner det angitte objektet fra listen, og oppretholder lenken av noder.
      * ,*
      * ,* @param o Objektet som skal fjernes.
-     * ,* @return true hvis et element ble fjernet, false
+     * ,* @return true hvis et element ble fjernet,false
      * ,* ellers.
      * ,
      *
