@@ -161,7 +161,7 @@ public class LinkedList<E> implements IList<E> {
     }
 
     /**
-     * ,* Fjerner det angitte objektet fra listen.
+     * ,* Fjerner det angitte objektet fra listen, og oppretholder lenken av noder.
      * ,*
      * ,* @param o Objektet som skal fjernes.
      * ,* @return true hvis et element ble fjernet, false
@@ -309,7 +309,6 @@ public class LinkedList<E> implements IList<E> {
     public void sort(Comparator<? super E> c) {
         IList<E> sorted = new LinkedList<E>();
         int parentSize = size();
-
         while(sorted.size() < parentSize){
             E smallest =head.getData();
             for (E elem : this) {
